@@ -1,6 +1,7 @@
 import rospy
 from clover import srv
 from std_srvs.srv import Trigger
+import math
 
 rospy.init_node('flight')
 
@@ -23,11 +24,11 @@ navigate(x=0, y=0, z=1, speed=1, frame_id='body', auto_arm=True) #ВЗЛЁТ
 rospy.sleep(5)
 
 set_altitude(z=1, frame_id='terrain') #ВЫСТАВИТЬ ЗНАЧЕНИЕ ВЫСОТЫ ДРОНА ОТ ПОЛА 1 МЕТР
-print("1 метр высоты")
+
 rospy.sleep(5)
 
 navigate(x=1, y=2, z=0, speed=0.5, frame_id='body') #ПОЛЁТ В ТОЧКУ
-print("полёт в точку")
+
 rospy.sleep(1)
 
 telemetry = get_telemetry()
@@ -35,17 +36,14 @@ print(telemetry.x, telemetry.y, telemetry.z)  #ПОКАЗАТЬ КООРДИНА
 
 rospy.sleep(5)
 
-navigate(yaw=math.radians(-360), frame_id='body')   #ПОКРУТИТЬСЯ НА МЕСТЕ
-print("прокрутка на месте")
+navigate(yaw=math.radians(180), frame_id='body')   #ПОКРУТИТЬСЯ НА МЕСТЕ
+rospy.sleep(3)
+navigate(yaw=math.radians(180), frame_id='body')
 
-rospy.sleep(7)
+rospy.sleep(15)
 
-set_position(x=-1, y=-2, z=0, frame_id='body') #ВОЗВРАТ НА ИСХОДНУЮ ТОЧКУ
-print("ОБРАТНО")
+navigate(x=-1, y=-2, z=0, speed=0.5, frame_id='body') #ВОЗВРАТ НА ИСХОДНУЮ ТОЧКУ
+
 rospy.sleep(5)
 
 land()   #ПОСАДКА
-print("подьем")
-
-
-
